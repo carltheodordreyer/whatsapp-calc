@@ -67,13 +67,7 @@ export default function Calculator() {
   const nMkt = getManyPrice(region, 'mkt')
   const nUtil = getManyPrice(region, 'util')
 
-  // (custos calculados abaixo, após agrupamento por país)
-  const pisF = 1 + pisCofins / 100
-  const issF = 1 + iss / 100
-  const taxMul = (taxesEnabled && currency === 'BRL') ? pisF * issF : 1
-  const finalTotalLocal = metaBaseLocal * taxMul
-  const pisAmt = taxesEnabled ? metaBaseLocal * (pisF - 1) : 0
-  const issAmt = taxesEnabled ? (metaBaseLocal * pisF) * (issF - 1) : 0
+  // (impostos calculados abaixo, após metaBaseLocal)
 
   // Handlers
   const onRegionChange = (newRegion: string) => {
@@ -216,6 +210,12 @@ export default function Calculator() {
   }
   const metaBaseLocal = toCur(costMetaUSD)
   const manyBaseLocal = toCur(costManyUSD)
+  const pisF = 1 + pisCofins / 100
+  const issF = 1 + iss / 100
+  const taxMul = (taxesEnabled && currency === 'BRL') ? pisF * issF : 1
+  const finalTotalLocal = metaBaseLocal * taxMul
+  const pisAmt = taxesEnabled ? metaBaseLocal * (pisF - 1) : 0
+  const issAmt = taxesEnabled ? (metaBaseLocal * pisF) * (issF - 1) : 0
 
   // Render
   return (
