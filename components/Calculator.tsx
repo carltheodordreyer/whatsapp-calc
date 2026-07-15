@@ -13,9 +13,7 @@ export default function Calculator() {
   const [mode, setMode] = useState<'basic' | 'advanced'>('basic')
   const [region, setRegion] = useState('BR')
   const [totalVolume, setTotalVolume] = useState(0)
-  const [mktQty, setMktQty] = useState(0)
-  const [utilQty, setUtilQty] = useState(0)
-  const [lastSplitPct, setLastSplitPct] = useState(0.36)
+  const [lastSplitPct, setLastSplitPct] = useState(36)
   const [budgetActive, setBudgetActive] = useState(false)
   const [budget, setBudget] = useState(0)
   const [taxesEnabled, setTaxesEnabled] = useState(false)
@@ -92,35 +90,21 @@ export default function Calculator() {
     setUseUploadVolume(false)
     setTotalVolume(clampVol(n))
   }
-  const applySplitToTotal = () => {
-    if (totalVolume === 0 && !useUploadVolume) return
-    if (useUploadVolume) return
-    setMktQty(Math.round(totalVolume * lastSplitPct / 100))
-    setUtilQty(totalVolume - Math.round(totalVolume * lastSplitPct / 100))
-  }
   const onCardInputChange = (which: 'mkt' | 'util', v: string) => {
+    if (totalContacts === 0 || useUploadVolume) return
     const n = clampVol(parseInt(v) || 0)
-    if (which === 'mkt') setMktQty(n)
-    else setUtilQty(n)
-    if (which === 'mkt') setUtilQty(totalVolume - n)
+    const pct = which === 'mkt' ? (n / totalContacts) * 100 : ((totalContacts - n) / totalContacts) * 100
+    setLastSplitPct(Math.min(100, Math.max(0, pct)))
   }
   const setSplit = (pct: number) => {
     setLastSplitPct(pct)
-    if (useUploadVolume) return
-    if (totalVolume > 0) {
-      setMktQty(Math.round(totalVolume * pct / 100))
-      setUtilQty(totalVolume - Math.round(totalVolume * pct / 100))
-    }
   }
   const clearField = (id: 'mkt' | 'util') => {
-    if (id === 'mkt') setMktQty(0)
-    else setUtilQty(0)
+    setLastSplitPct(id === 'mkt' ? 0 : 100)
   }
   const resetAll = () => {
     setRegion('BR')
     setTotalVolume(0)
-    setMktQty(0)
-    setUtilQty(0)
     setContacts([])
     setUseUploadVolume(false)
     setTaxesEnabled(false)
@@ -133,12 +117,10 @@ export default function Calculator() {
     if (!budgetActive || budget <= 0) return
     const p = getMetaPrice(region, 'mkt')
     const u = getMetaPrice(region, 'util')
-    const split = lastSplitPct
-    const avg = p * split + u * (1 - split)
+    const splitFrac = lastSplitPct / 100
+    const avg = p * splitFrac + u * (1 - splitFrac)
     const total = Math.round(budget / (avg * fxRate))
     setTotalVolume(clampVol(total))
-    setMktQty(Math.round(total * split))
-    setUtilQty(total - Math.round(total * split))
   }
   const onBudgetSliderInput = (v: string) => {
     const n = parseInt(v) || 0
@@ -716,7 +698,7 @@ export default function Calculator() {
         </div>
 
         <footer className="mt-8 pt-4 border-t border-ink-800/60 text-center text-[9px] text-ink-600">
-          WhatsCost · Cotações via <a className="text-ink-400 hover:text-ink-300" href="https://frankfurter.dev">frankfurter.dev</a> · Taxas: Meta (jul/2025) + Manychat
+          WhatsCost · Cotações via <a className="text-ink-400 hover:text-ink-300" href="https://frankfurter.dev">frankfurter.dev</a> · Taxas: Meta (jul/2026) + Manychat (jul/2026)
         </footer>
       </main>
 

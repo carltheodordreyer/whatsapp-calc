@@ -60,10 +60,10 @@ Países não reconhecidos caem automaticamente no fallback "Outros países".
 ## 🧾 Tabelas de Preços
 
 ### Meta API
-Baseado em [developers.facebook.com/documentation/business-messaging/whatsapp/pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) (jul/2025+).
+Baseado em [developers.facebook.com/documentation/business-messaging/whatsapp/pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing), tarifas vigentes desde jul/2026. Países sem tarifa própria usam o bloco regional da Meta (Rest of Latin America, Rest of Western Europe, etc.).
 
 ### Manychat
-Baseado em [help.manychat.com WhatsApp pricing guide](https://help.manychat.com/hc/en-us/articles/14281380243740-WhatsApp-pricing-guide).
+Baseado em [help.manychat.com WhatsApp pricing guide](https://help.manychat.com/hc/en-us/articles/14281380243740-WhatsApp-pricing-guide), tarifas vigentes desde jul/2026.
 
 ## 📝 Licença
 
